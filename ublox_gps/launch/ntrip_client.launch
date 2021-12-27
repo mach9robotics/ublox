@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <node pkg="ublox_gps" type="ntrip_client.py" name="ntrip_ros" output="screen">
+        <param name="rtcm_topic" value="/rtcm" />
+        <param name="ntrip_server" value="rtk2go.com:2101" />
+        <param name="ntrip_user" value="dev-bot@mach9.io" />
+        <param name="ntrip_pass" value="*" />
+        <param name="ntrip_stream" value="HersheyPA" />
+        <param name="nmea_gga" value="$GPGGA,225957.370,4026.709,N,07956.652,W,1,12,1.0,0.0,M,0.0,M,,*74" />
+    </node>
+</launch>

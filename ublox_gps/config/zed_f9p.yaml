@@ -1,5 +1,10 @@
+# Configuration Settings for C94-M8P device
+debug: 1                    # Range 0-4 (0 means no debug statements will print)
 device: /dev/ttyACM0
 frame_id: gps
 uart1:
-  baudrate: 38400
+    baudrate: 9600
 config_on_startup: false
+
+publish:
+    all: true
