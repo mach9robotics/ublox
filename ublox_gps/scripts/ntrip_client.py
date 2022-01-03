@@ -47,7 +47,7 @@ class ntripconnect(Thread):
             'Connection': 'close',
             'Authorization': 'Basic ' + b64encode(auth.encode("ascii")).hex()
         }
-        print(headers)
+        rospy.loginfo(headers)
         connection = HTTPConnection(self.ntc.ntrip_server)
         connection.request(
             'GET',
@@ -71,7 +71,8 @@ class ntripconnect(Thread):
                     data = response.read(2)
                     buf += data
                     typ = (data[0] * 256 + data[1]) / 16
-                    print(str(datetime.now()), cnt, typ)
+                    rospy.loginfo_once("NTRIP connection established at " + \
+                        str(datetime.now()))
                     cnt = cnt + 1
                     for x in range(cnt):
                         data = response.read(1)
@@ -85,7 +86,7 @@ class ntripconnect(Thread):
                 ''' If zero length data, close connection and reopen it '''
                 time.sleep(5)
                 restart_count = restart_count + 1
-                print("Zero length ", restart_count)
+                rospy.logwarn("Zero length ", restart_count)
                 connection.close()
                 connection = HTTPConnection(self.ntc.ntrip_server)
                 connection.request(
