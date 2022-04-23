@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
+    <arg name="ntrip_server" default="rtk2go.com:2101" />
+    <arg name="ntrip_user" default="dev-bot@mach9.io" />
+    <arg name="ntrip_pass" default="*" />
+    <arg name="ntrip_stream" default="HersheyPA" />
+
     <node pkg="ublox_gps" type="ntrip_client.py" name="ntrip_ros" output="screen">
         <param name="rtcm_topic" value="/rtcm" />
-        <param name="ntrip_server" value="rtk2go.com:2101" />
-        <param name="ntrip_user" value="dev-bot@mach9.io" />
-        <param name="ntrip_pass" value="*" />
-        <param name="ntrip_stream" value="HersheyPA" />
+        <param name="ntrip_server" value="$(arg ntrip_server)" />
+        <param name="ntrip_user" value="$(arg ntrip_user)" />
+        <param name="ntrip_pass" value="$(arg ntrip_pass)" />
+        <param name="ntrip_stream" value="$(arg ntrip_stream)" />
         <param name="nmea_gga" value="$GPGGA,225957.370,4026.709,N,07956.652,W,1,12,1.0,0.0,M,0.0,M,,*74" />
     </node>
 </launch>
