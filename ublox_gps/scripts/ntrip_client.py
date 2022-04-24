@@ -41,11 +41,12 @@ class ntripconnect(Thread):
 
     def run(self):
         auth = self.ntc.ntrip_user + ':' + self.ntc.ntrip_pass
+        print(auth)
         headers = {
             'Ntrip-Version': 'Ntrip/2.0',
             'User-Agent': 'NTRIP ntrip_ros',
             'Connection': 'close',
-            'Authorization': 'Basic ' + b64encode(auth.encode("ascii")).hex()
+            'Authorization': 'Basic ' + b64encode(auth.encode("utf-8")).decode("utf-8")
         }
         rospy.loginfo(headers)
         connection = HTTPConnection(self.ntc.ntrip_server)
@@ -55,7 +56,10 @@ class ntripconnect(Thread):
             self.ntc.nmea_gga,
             headers)
         response = connection.getresponse()
-        if response.status != 200: raise Exception("blah")
+        if response.status != 200:
+            print(response)
+            print(response.status)
+            raise Exception("blah")
         buf = bytearray()
         rmsg = Message()
         restart_count = 0
@@ -95,7 +99,10 @@ class ntripconnect(Thread):
                     self.ntc.nmea_gga,
                     headers)
                 response = connection.getresponse()
-                if response.status != 200: raise Exception("blah")
+                if response.status != 200:
+                    print(response)
+                    print(response.status)
+                    raise Exception("blah")
                 buf = bytearray()
 
         connection.close()
@@ -113,7 +120,7 @@ class ntripclient:
         self.ntrip_stream = rospy.get_param('~ntrip_stream')
         self.nmea_gga = rospy.get_param('~nmea_gga')
 
-        self.pub = rospy.Publisher(self.rtcm_topic, Message, queue_size=10)
+        self.pub = rospy.Publisher(self.rtcm_topic, Message, queue_size=1)
 
         self.connection = None
         self.connection = ntripconnect(self)
