@@ -802,7 +802,7 @@ class UbloxFirmware7Plus : public UbloxFirmware {
     fix.header.frame_id = frame_id;
     // set the timestamp
     uint8_t valid_time = m.VALID_DATE | m.VALID_TIME | m.VALID_FULLY_RESOLVED;
-    if (((m.valid & valid_time) == valid_time) &&
+    if (!use_ros_time_ && ((m.valid & valid_time) == valid_time) &&
         (m.flags2 & m.FLAGS2_CONFIRMED_AVAILABLE)) {
       // Use NavPVT timestamp since it is valid
       // The time in nanoseconds from the NavPVT message can be between -1e9 and 1e9
@@ -959,6 +959,8 @@ class UbloxFirmware7Plus : public UbloxFirmware {
   bool enable_sbas_;
   //! The QZSS Signal configuration, see CfgGNSS message
   uint32_t qzss_sig_cfg_;
+  //! Whether to use ROS time or GNSS time for timestamping
+  bool use_ros_time_;
 };
 
 /**
