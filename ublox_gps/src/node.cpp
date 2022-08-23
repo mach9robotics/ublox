@@ -1000,6 +1000,9 @@ bool UbloxFirmware7::configureUblox() {
 void UbloxFirmware7::subscribe() {
   // Whether to publish Nav PVT messages to a ROS topic
   nh->param("publish/nav/pvt", enabled["nav_pvt"], enabled["nav"]);
+    // Whether to use ROS time or GNSS time for timestamping
+  nh->param("publish/use_ros_time", use_ros_time_, false);
+  ROS_INFO("publish/use_ros_time: %d", use_ros_time_);
   // Subscribe to Nav PVT (always does so since fix information is published
   // from this)
   gps.subscribe<ublox_msgs::NavPVT7>(boost::bind(
@@ -1236,6 +1239,9 @@ bool UbloxFirmware8::configureUblox() {
 void UbloxFirmware8::subscribe() {
   // Whether to publish Nav PVT messages
   nh->param("publish/nav/pvt", enabled["nav_pvt"], enabled["nav"]);
+    // Whether to use ROS time or GNSS time for timestamping
+  nh->param("publish/use_ros_time", use_ros_time_, false);
+  ROS_INFO("publish/use_ros_time: %d", use_ros_time_);
   // Subscribe to Nav PVT
   gps.subscribe<ublox_msgs::NavPVT>(
     boost::bind(&UbloxFirmware7Plus::callbackNavPvt, this, _1), kSubscribeRate);
